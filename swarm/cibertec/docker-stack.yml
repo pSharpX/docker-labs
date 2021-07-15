@@ -1,0 +1,121 @@
+# The build option is ignored when deploying a stack in swarm mode The docker stack command does not build images before deploying.
+# If you specify image as well as build, then Compose names the built image with the webapp and optional tag specified in image
+# The container_name option is ignored when deploying a stack in swarm mode
+# The depends_on option is ignored when deploying a stack in swarm mode with a version 3 Compose file.
+
+version: "3.8"
+
+networks:
+    cibertec_production: {}
+volumes:
+    web-log:
+services:
+    mongo:
+        image: 192.168.99.110:5000/cibertec/mongo_emisionvotos:1.0-stack
+        container_name: mongo_emisionvotos
+        hostname: mongo_emisionvotos
+        labels:
+            edu.cibertec.votoelectronico.project.name: "EmisionVotos"
+            edu.cibertec.votoelectronico.project.key: "votoelectronico"
+            edu.cibertec.votoelectronico.project.version: "1.0"
+            edu.cibertec.votoelectronico.project.description: "EmisionVotos Application"
+            edu.cibertec.votoelectronico.author.name: "Christian Rivera"
+            edu.cibertec.votoelectronico.author.email: "crivera2093@gmail.com"
+            edu.cibertec.votoelectronico.author.url: "https://github.com/pSharpX"
+        networks:
+            - cibertec_production
+        ports:
+            - "27018:27017"
+        deploy:
+            mode: replicated
+            replicas: 1
+            endpoint_mode: vip
+            placement:
+                max_replicas_per_node: 1
+                constraints: [node.role == manager]
+            restart_policy:
+                condition: on-failure
+        restart: always
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: admin
+            MONGO_INITDB_ROOT_PASSWORD: $$admin123.a
+            MONGO_INITDB_DATABASE: admin
+        # volumes:
+        #    - ./data/mongo-scripts/:/docker-entrypoint-initdb.d/
+        command: ["--auth"]
+    web:
+        image: 192.168.99.110:5000/cibertec/wildfly_emisionvotos:1.0-stack
+        container_name: wildfly_emisionvotos
+        hostname: wildfly_emisionvotos
+        labels:
+            edu.cibertec.votoelectronico.project.name: "EmisionVotos"
+            edu.cibertec.votoelectronico.project.key: "votoelectronico"
+            edu.cibertec.votoelectronico.project.version: "1.0"
+            edu.cibertec.votoelectronico.project.description: "EmisionVotos Application"
+            edu.cibertec.votoelectronico.author.name: "Christian Rivera"
+            edu.cibertec.votoelectronico.author.email: "crivera2093@gmail.com"
+            edu.cibertec.votoelectronico.author.url: "https://github.com/pSharpX"
+        networks:
+            - cibertec_production
+        ports:
+            - "8080:8080"
+            - "9990:9990"
+        deploy:
+            mode: replicated
+            replicas: 3
+            endpoint_mode: vip
+            placement:
+                max_replicas_per_node: 2
+            restart_policy:
+                condition: on-failure
+        restart: always
+        volumes:
+            - "web-log:/opt/jboss/wildfly/standalone/log"
+        command:
+            [
+                "/opt/jboss/wildfly/bin/standalone.sh",
+                "-b",
+                "0.0.0.0",
+                "-bmanagement",
+                "0.0.0.0",
+            ]
+        depends_on:
+            - mongo
+    client:
+        image: 192.168.99.110:5000/cibertec/javaclient_emisionvotos:1.0-stack
+        container_name: javaclient_emisionvotos
+        hostname: javaclient_emisionvotos
+        labels:
+            edu.cibertec.votoelectronico.project.name: "EmisionVotos"
+            edu.cibertec.votoelectronico.project.key: "votoelectronico"
+            edu.cibertec.votoelectronico.project.version: "1.0"
+            edu.cibertec.votoelectronico.project.description: "EmisionVotos Application"
+            edu.cibertec.votoelectronico.author.name: "Christian Rivera"
+            edu.cibertec.votoelectronico.author.email: "crivera2093@gmail.com"
+            edu.cibertec.votoelectronico.author.url: "https://github.com/pSharpX"
+        networks:
+            - cibertec_production
+        deploy:
+            mode: replicated
+            replicas: 1
+            endpoint_mode: vip
+            placement:
+                max_replicas_per_node: 2
+            restart_policy:
+                condition: on-failure
+        restart: always
+        environment:
+            - JAVA_OPTS
+        # volumes:
+        #    - ./data/app/tmp:/tmp
+        entrypoint:
+            [
+                "./wait-for-it.sh",
+                "web:8080",
+                "--",
+                "sh",
+                "-c",
+                "java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar /EmisionVoto_Client-1.0-SNAPSHOT.jar",
+            ]
+        depends_on:
+            - web

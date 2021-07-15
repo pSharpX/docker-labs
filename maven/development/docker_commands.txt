@@ -1,0 +1,54 @@
+# /************ Docker-Compose ************/
+
+# Command for executing a command inside the running container-service defined in docker-compose
+docker-compose exec SERVICE_NAME[defined in docker-compose-file] bash|sh
+
+
+# /************ For CentOS/OpenJDK Image ************/
+
+# Command for building a customized official image
+ docker build --no-cache -t openjdk-maven/dev:1.0 .
+
+# Command for removing a docker image
+docker rmi openjdk-maven/dev:1.0
+
+# Command for running container based on a CentOS
+docker run -it --rm --name demoMaven openjdk-maven/dev:1.0
+
+# Command for running container based on a CentOS without name
+docker run -it --rm openjdk-maven/dev:1.0
+
+
+
+
+# /************ For Creating a docker network for our containers ************/
+
+docker network ls
+
+docker network create --label "env=development" cibertec/development
+
+
+
+
+# /************ For Creating a docker volum for our containers (include a maven example) ************/
+
+$ docker volume create --name maven-repo
+$ docker run -it -v maven-repo:/root/.m2 maven mvn archetype:generate # will download artifacts
+$ docker run -it -v maven-repo:/root/.m2 maven mvn archetype:generate # will reuse downloaded artifacts
+
+## Or you can just use your home .m2 cache directory that you share e.g. with your Eclipse/IDEA:
+
+$ docker run -it --rm -v "$PWD":/usr/src/mymaven -v "$HOME/.m2":/root/.m2 -v "$PWD/target:/usr/src/mymaven/target" -w /usr/src/mymaven maven mvn clean package  
+
+
+
+
+# /************ Some linux commands ************/
+apt-get update
+apt-get install iputils-ping
+
+apt-get install net-tools
+
+FROM ubuntu
+RUN apt-get update && apt-get install -y iputils-ping
+CMD bash

@@ -1,0 +1,83 @@
+# /************ Docker-Compose ************/
+
+# Command for executing a command inside the running container-service defined in docker-compose
+docker-compose exec SERVICE_NAME[defined in docker-compose-file] bash|sh
+
+winpty docker exec -it some_cassandra bash
+
+# /************ For RabbitMQ Image ************/
+
+# Command for building a customized official image
+ docker build --no-cache -t openjdk/dev:1.0 .
+
+# Command for removing a docker image
+docker rmi openjdk/dev:1.0
+
+# Command for running container based on a CentOS
+docker run -it --rm --name demoJDK openjdk/dev:1.0
+
+# Command for running container based on a CentOS without name
+docker run -it --rm openjdk/dev:1.0
+
+1. Start master node:
+
+docker run -d \
+    --name="rabbit1" \
+    --hostname="rabbit1"\
+    -e RABBITMQ_ERLANG_COOKIE="secret string" \
+    -e RABBITMQ_NODENAME="rabbit1" \
+    -v /"$PWD/rabbitmq.config":/etc/rabbitmq/rabbitmq.config \
+    -v /"$PWD/definitions.json":/etc/rabbitmq/definitions.json \
+    --publish="4369:4369" \
+    --publish="5671:5671" \
+    --publish="5672:5672" \
+    --publish="15671:15671" \
+    --publish="15672:15672" \
+    --publish="25672:25672" \
+    rabbitmq:3-management
+
+2. Start slave #1:
+
+docker run -d \
+    --name="rabbit2" \
+    --hostname="rabbit2"\
+    -e RABBITMQ_ERLANG_COOKIE="secret string" \
+    -e RABBITMQ_NODENAME="rabbit2" \
+    --volume=/"$(pwd)"/rabbitmq.config:/etc/rabbitmq/rabbitmq.config \
+    --volume=/"$(pwd)"/definitions.json:/etc/rabbitmq/definitions.json \
+    --link="rabbit1:rabbit1" \
+    rabbitmq:3-management
+
+3. Start slave #2:
+
+docker run -d \
+    --name="rabbit3" \
+    --hostname="rabbit3"\
+    -e RABBITMQ_ERLANG_COOKIE="secret string" \
+    -e RABBITMQ_NODENAME="rabbit3" \
+    --volume=/$(pwd)/rabbitmq.config:/etc/rabbitmq/rabbitmq.config \
+    --volume=/$(pwd)/definitions.json:/etc/rabbitmq/definitions.json \
+    --link="rabbit1:rabbit1" \
+    --link="rabbit2:rabbit2" \
+    rabbitmq:3-management
+
+
+# /************ For Creating a docker network for our containers ************/
+
+docker network ls
+
+docker network create --label "env=development" cibertec/development
+
+
+
+
+
+# /************ Some linux commands ************/
+apt-get update
+apt-get install iputils-ping
+
+apt-get install net-tools
+
+FROM ubuntu
+RUN apt-get update && apt-get install -y iputils-ping
+CMD bash

@@ -1,0 +1,86 @@
+# /************ For Official Mongo Image ************/
+
+# Command for running container based on mongo image
+docker run -it --rm --name mongo_emisionvotos -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=example -p 27018:27017 -h mongo_emisionvotos mongo:latest
+
+# Command for building a customized official image
+docker build --no-cache -t cibertec/mongo_emisionvotos:1.0 .
+
+# Command for removing a docker image
+docker rmi cibertec/mongo_emisionvotos:1.0
+
+# Command for running container based on a customized official mongo image
+docker run -it --rm --name mongo_emisionvotos -p 27018:27017 -h mongo_emisionvotos cibertec/mongo_emisionvotos:1.0
+
+# Command for running container based on a customized official mongo image with a existing network
+docker run -it --rm --name mongo_emisionvotos --network cibertec/development -p 27018:27017 -h mongo_emisionvotos cibertec/mongo_emisionvotos:1.0
+
+# Command for executing a command inside the running container
+docker exec -it mongo_emisionvotos bin/bash
+
+
+
+
+
+# /************ For Official JBoss/wildfly Image ************/
+
+# Command for running container based on jboss/wildfly image
+docker run -it --rm --name wildfly_emisionvotos -p 8080:8080 -p 9990:9990 -h wildfly_emisionvotos jboss/wildfly:latest
+
+docker run -it --rm --name wildfly_emisionvotos -p 8080:8080 -p 9990:9990 -h wildfly_emisionvotos jboss/wildfly /opt/jboss/wildfly/bin/standalone.sh -b 0.0.0.0 -bmanagement 0.0.0.0
+
+# Command for building a customized official image
+docker build --no-cache -t cibertec/wildfly_emisionvotos:1.0 .
+
+# Command for removing a docker image
+docker rmi cibertec/wildfly_emisionvotos:1.0
+
+# Command for running container based on a customized official wildfly image
+docker run -it --rm --name wildfly_emisionvotos -p 8080:8080 -p 9990:9990 -h wildfly_emisionvotos cibertec/wildfly_emisionvotos:1.0
+
+# Command for running container based on a customized official wildfly image with a existing network
+docker run -it --rm --name wildfly_emisionvotos --network cibertec/development -p 8080:8080 -p 9990:9990 -h wildfly_emisionvotos cibertec/wildfly_emisionvotos:1.0
+
+# Command for executing a command inside the running container
+docker exec -it wildfly_emisionvotos bin/bash
+
+
+# Command for executing a command inside the running container-service defined in docker-compose
+docker-compose exec SERVICE_NAME[defined in docker-compose-file] bash|sh
+
+
+
+# /************ For CentOS/OpenJDK Image ************/
+
+# Command for building a customized official image
+ docker build --no-cache -t cibertec/javaclient_emisionvotos:1.0 .
+
+# Command for removing a docker image
+docker rmi cibertec/javaclient_emisionvotos:1.0
+
+# Command for running container based on a customized official wildfly image
+docker run -it --rm --name javaclient_emisionvotos cibertec/javaclient_emisionvotos:1.0
+
+
+
+
+
+# /************ For Creating a docker network for our containers ************/
+
+docker network ls
+
+docker network create --label "env=development" cibertec/development
+
+
+
+
+
+# /************ Some linux commands ************/
+apt-get update
+apt-get install iputils-ping
+
+apt-get install net-tools
+
+FROM ubuntu
+RUN apt-get update && apt-get install -y iputils-ping
+CMD bash

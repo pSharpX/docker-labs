@@ -1,0 +1,10 @@
+# Command for running container based on mongo image
+docker run -it --rm --name mongo_emisionvotos -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=example -p 27018:27017 -h mongo_emisionvotos mongo:latest
+
+docker exec -it mongo_emisionvotos bin/bash
+
+# Command for running container based on a customized official mongo image
+docker run -it --rm --name mongo_emisionvotos -p 27018:27017 -h mongo_emisionvotos cibertec/mongo_emisionvotos:1.0
+
+# Command for building a customized official image
+docker build --no-cache -t cibertec/mongo_emisionvotos:1.0 .

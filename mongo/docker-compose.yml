@@ -1,0 +1,30 @@
+# Use root/example as user/password credentials
+version: "3.6"
+
+networks:
+    cibertec/development: {}
+services:
+    db_mongo:
+        image: mongo:latest
+        container_name: mongo_emisionvotos
+        hostname: mongo_emisionvotos
+        labels:
+            edu.cibertec.votoelectronico.project: "EmisionVotos"
+            edu.cibertec.votoelectronico.version: "1.0"
+            edu.cibertec.votoelectronico.author.name: "Christian Rivera"
+            edu.cibertec.votoelectronico.author.email: "crivera2093@gmail.com"
+            edu.cibertec.votoelectronico.author.url: "https://github.com/pSharpX"
+            edu.cibertec.votoelectronico.author.description: "EmisionVotos Application"
+        networks:
+            - cibertec/development
+        ports:
+            - "27018:27017"
+        restart: always
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: admin
+            MONGO_INITDB_ROOT_PASSWORD: $$admin123.a
+            MONGO_INITDB_DATABASE: admin
+        volumes:
+#            - ./data/database/:/data/db // This not working
+            - ./startup/:/docker-entrypoint-initdb.d/
+        command: ["--auth"]
