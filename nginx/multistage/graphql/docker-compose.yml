@@ -1,0 +1,91 @@
+# Use root/example as user/password credentials
+version: "3.6"
+
+networks:
+    - graphbook/in.production: {},
+    - graphbook/production: {},
+services:
+    database:
+        image: mongo:latest
+        container_name: database_graphbook
+        hostname: database.graphbook.pe
+        labels:
+            edu.cibertec.votoelectronico.project: "GraphBook"
+            edu.cibertec.votoelectronico.version: "1.0"
+            edu.cibertec.votoelectronico.author.name: "Christian Rivera"
+            edu.cibertec.votoelectronico.author.email: "crivera2093@gmail.com"
+            edu.cibertec.votoelectronico.author.url: "https://github.com/pSharpX"
+            edu.cibertec.votoelectronico.author.description: "GraphBook Application"
+        networks:
+            - graphbook/in.production
+        ports:
+            - "27018:27017"
+        restart: always
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: admin
+            MONGO_INITDB_ROOT_PASSWORD: $$admin123.a
+            MONGO_INITDB_DATABASE: admin
+        volumes:
+            - ./data/mongo-scripts/:/docker-entrypoint-initdb.d/
+        command: ["--auth"]
+    api:
+        build:
+            context: ./
+            dockerfile: Dockerfile
+        container_name: api_graphbook
+        hostname: api.graphbook.pe
+        labels:
+            edu.cibertec.votoelectronico.project: "GraphBook"
+            edu.cibertec.votoelectronico.version: "1.0"
+            edu.cibertec.votoelectronico.author.name: "Christian Rivera"
+            edu.cibertec.votoelectronico.author.email: "crivera2093@gmail.com"
+            edu.cibertec.votoelectronico.author.url: "https://github.com/pSharpX"
+            edu.cibertec.votoelectronico.author.description: "GraphBook Application"
+        networks:
+            - graphbook/in.production
+            - graphbook/production
+        ports:
+            - "8080:8080"
+            - "9990:9990"
+        restart: always
+        volumes:
+            - ./data/log:/opt/jboss/wildfly/standalone/log
+        command:
+            [
+                "/opt/jboss/wildfly/bin/standalone.sh",
+                "-b",
+                "0.0.0.0",
+                "-bmanagement",
+                "0.0.0.0",
+            ]
+        depends_on:
+            - database
+    web:
+        build:
+            context: ./
+            dockerfile: Dockerfile.client
+        container_name: client_emisionvotos
+        hostname: web.graphbook.pe
+        labels:
+            edu.cibertec.votoelectronico.project: "GraphBook"
+            edu.cibertec.votoelectronico.version: "1.0"
+            edu.cibertec.votoelectronico.author.name: "Christian Rivera"
+            edu.cibertec.votoelectronico.author.email: "crivera2093@gmail.com"
+            edu.cibertec.votoelectronico.author.url: "https://github.com/pSharpX"
+            edu.cibertec.votoelectronico.author.description: "GraphBook Application"
+        networks:
+            - graphbook/production
+        restart: always
+        environment:
+            - JAVA_OPTS
+        entrypoint:
+            [
+                "./wait-for-it.sh",
+                "api:8080",
+                "--",
+                "sh",
+                "-c",
+                "java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar /EmisionVoto_Client-1.0-SNAPSHOT.jar",
+            ]
+        depends_on:
+            - api
