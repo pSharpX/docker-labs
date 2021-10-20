@@ -40,7 +40,8 @@ $ docker run -it -v maven-repo:/root/.m2 maven mvn archetype:generate # will reu
 
 $ docker run -it --rm -v "$PWD":/usr/src/mymaven -v "$HOME/.m2":/root/.m2 -v "$PWD/target:/usr/src/mymaven/target" -w /usr/src/mymaven maven mvn clean package  
 
-
+docker rmi -f $(docker images --filter "dangling=true" --format "{{.ID}}")
+winpty docker exec -it some-nginx bash
 
 
 # /************ Some linux commands ************/
