@@ -32,6 +32,6 @@ RUN mkdir ${WORKPLACE_PATH} && mkdir ${APPLICATION_PATH}
 
 COPY --from=builder ${APPLICATION_PATH}/dist/server ${APPLICATION_PATH}
 
-WORKDIR ${APPLICATION_PATH}}
+WORKDIR ${APPLICATION_PATH}
 
 CMD [ "npm", "run", "server:production" ]
