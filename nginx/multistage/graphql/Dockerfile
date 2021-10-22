@@ -34,4 +34,4 @@ COPY --from=builder ${APPLICATION_PATH}/dist/server ${APPLICATION_PATH}
 
 WORKDIR ${APPLICATION_PATH}
 
-CMD [ "npm", "run", "server:production" ]
+CMD [ "node", "bundle.js" ]
