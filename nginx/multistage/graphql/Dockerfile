@@ -32,7 +32,9 @@ WORKDIR ${WORKPLACE_PATH}/${MAIN_DIR}
 COPY --from=builder ${WORKPLACE_PATH}/${MAIN_DIR}/package.json package.json
 COPY --from=builder ${WORKPLACE_PATH}/${MAIN_DIR}/dist dist
 
-RUN npm install --only=production
+#RUN npm install --only=production
+##TODO: change to --only=production when fixing application production building.
+RUN npm install
 
 EXPOSE 8000
 CMD [ "npm", "run", "server:production" ]
