@@ -1,4 +1,6 @@
-/secrets
-/data/db
+node_modules
+package-lock.json
+secrets
+data/db
 *.sh
 *.yml
