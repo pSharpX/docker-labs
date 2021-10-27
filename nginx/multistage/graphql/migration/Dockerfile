@@ -1,7 +1,6 @@
 FROM node:14-alpine AS builder
 
 ARG ENV=production
-ARG NODE_ENV=${ENV}
 ARG MAIN_DIR=graphbook
 ARG WORKPLACE_PATH=/opt/source
 
@@ -16,7 +15,6 @@ WORKDIR ${WORKPLACE_PATH}/${MAIN_DIR}
 FROM node:14-alpine
 
 ARG ENV=production
-ARG NODE_ENV=${ENV}
 ARG MAIN_DIR=graphbook
 ARG WORKPLACE_PATH=/opt/source
 
@@ -41,9 +39,8 @@ COPY --from=builder ${WORKPLACE_PATH}/${MAIN_DIR}/package*.json ./
 COPY --from=builder ${WORKPLACE_PATH}/${MAIN_DIR}/webpack.server.build.config.js ./
 COPY --from=builder ${WORKPLACE_PATH}/${MAIN_DIR}/webpack.client.build.config.js ./
 COPY --from=builder ${WORKPLACE_PATH}/${MAIN_DIR}/src src
-COPY --from=builder ${WORKPLACE_PATH}/${MAIN_DIR}/assets assets
 
 RUN ["npm", "install"]
 RUN ["npm", "install", "-g" ,"mysql2", "sequelize", "sequelize-cli"]
 
-CMD [ "sequelize", "db:migrate", "--migrations-path", "src/server/migrations", "--config", "src/server/config/index.js", "--env", "${NODE_ENV}" ] 
+CMD [ "sequelize", "db:migrate", "--migrations-path", "src/server/migrations", "--config", "src/server/config/index.js", "--env", "$NODE_ENV" ] 
