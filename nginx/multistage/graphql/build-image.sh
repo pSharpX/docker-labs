@@ -1,5 +1,5 @@
 #!/bin/sh
-echo Building psharpx/emisionvote-api:1.0
+echo Building psharpx/graphbook-api:1.0
 
 docker build --no-cache -t psharpx/graphbook-api:1.0 . -f Dockerfile
 #docker build --no-cache -t psharpx/graphbook-client:1.0 . -f Dockerfile.client

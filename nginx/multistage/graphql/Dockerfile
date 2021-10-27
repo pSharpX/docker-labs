@@ -1,5 +1,6 @@
 FROM node:14-alpine AS builder
 
+ARG ENV=production
 ARG SOURCE_CODE_URL=https://github.com/pSharpX/graphbook.git
 ARG MAIN_DIR=graphbook
 ARG WORKPLACE_PATH=/opt/source
