@@ -36,12 +36,12 @@ LABEL edu.cibertec.votoelectronico.project.name="GraphBook" \
 
 WORKDIR ${WORKPLACE_PATH}/${MAIN_DIR}
 
-COPY --from=builder .babelrc ./
-COPY --from=builder package*.json ./
-COPY --from=builder webpack.server.build.config.js ./
-COPY --from=builder webpack.client.build.config.js ./
-COPY --from=builder src src
-COPY --from=builder assets assets
+COPY --from=builder ${WORKPLACE_PATH}/${MAIN_DIR}/.babelrc ./
+COPY --from=builder ${WORKPLACE_PATH}/${MAIN_DIR}/package*.json ./
+COPY --from=builder ${WORKPLACE_PATH}/${MAIN_DIR}/webpack.server.build.config.js ./
+COPY --from=builder ${WORKPLACE_PATH}/${MAIN_DIR}/webpack.client.build.config.js ./
+COPY --from=builder ${WORKPLACE_PATH}/${MAIN_DIR}/src src
+COPY --from=builder ${WORKPLACE_PATH}/${MAIN_DIR}/assets assets
 
 RUN ["npm", "install"]
 RUN ["npm", "install", "-g" ,"mysql2", "sequelize", "sequelize-cli"]
