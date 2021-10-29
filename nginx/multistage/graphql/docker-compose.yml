@@ -41,6 +41,24 @@ services:
         volumes:
             - ./data/db-scripts/:/docker-entrypoint-initdb.d/
             - ./data/db/:/var/lib/mysql
+    server:
+        image: nginx:1.21.3-alpine
+        container_name: integration_graphbook
+        hostname: integration.graphbook.pe   
+        labels:
+            edu.cibertec.votoelectronico.project: "GraphBook"
+            edu.cibertec.votoelectronico.version: "1.0"
+            edu.cibertec.votoelectronico.author.name: "Christian Rivera"
+            edu.cibertec.votoelectronico.author.email: "crivera2093@gmail.com"
+            edu.cibertec.votoelectronico.author.url: "https://github.com/pSharpX"
+            edu.cibertec.votoelectronico.author.description: "GraphBook Application"
+        networks:
+            - graphbook/in.production
+            - graphbook/production
+        volumes:
+            - ./config/vhost_server.conf:/etc/nginx/conf.d/default.conf
+        ports:
+            - "8080:80"
     api:
         build:
             context: ./
@@ -61,7 +79,6 @@ services:
             edu.cibertec.votoelectronico.author.description: "GraphBook Application"
         networks:
             - graphbook/in.production
-            - graphbook/production
         restart: always
         environment:
             HOST: ${DATABASE_HOSTNAME}
@@ -90,6 +107,6 @@ services:
             - graphbook/production
         restart: always
         ports:
-            - "8080:80"
+            - "8081:80"
         depends_on:
             - api
