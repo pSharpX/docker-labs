@@ -41,6 +41,6 @@ COPY --from=builder ${WORKPLACE_PATH}/${MAIN_DIR}/webpack.client.build.config.js
 COPY --from=builder ${WORKPLACE_PATH}/${MAIN_DIR}/src src
 
 RUN ["npm", "install"]
-RUN ["npm", "install", "-g" ,"mysql2", "sequelize", "sequelize-cli"]
+RUN ["npm", "install", "-g" ,"mysql2@2.1.0", "sequelize@5.21.3", "sequelize-cli@5.4.0"]
 
-CMD [ "sequelize", "db:migrate", "--migrations-path", "src/server/migrations", "--config", "src/server/config/index.js", "--env", "$NODE_ENV" ] 
+CMD [ "sequelize", "db:migrate", "--migrations-path", "src/server/migrations", "--config", "src/server/config/index.js", "--env", "production" ] 
