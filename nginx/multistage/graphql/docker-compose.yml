@@ -6,11 +6,11 @@ networks:
 
 secrets:
     db_user:
-        file: ./secrets/db_user.txt
+        file: ./secrets/db_user
     db_password:
-        file: ./secrets/db_password.txt
+        file: ./secrets/db_password
     db_root_password:
-        file: ./secrets/db_root_password.txt
+        file: ./secrets/db_root_password
 
 services:
     database:
@@ -41,6 +41,33 @@ services:
         volumes:
             - ./data/db-scripts/:/docker-entrypoint-initdb.d/
             - ./data/db/:/var/lib/mysql
+    api:
+        build:
+            context: ./
+            dockerfile: Dockerfile
+        image: psharpx/graphbook-api:${TAG}
+        container_name: api_graphbook
+        hostname: api.graphbook.pe
+        secrets:
+            - db_user
+            - db_password
+        labels:
+            edu.cibertec.votoelectronico.project: "GraphBook"
+            edu.cibertec.votoelectronico.version: "1.0"
+            edu.cibertec.votoelectronico.author.name: "Christian Rivera"
+            edu.cibertec.votoelectronico.author.email: "crivera2093@gmail.com"
+            edu.cibertec.votoelectronico.author.url: "https://github.com/pSharpX"
+            edu.cibertec.votoelectronico.author.description: "GraphBook Application"
+        networks:
+            - graphbook/in.production
+        restart: always
+        environment:
+            HOST: ${DATABASE_HOSTNAME}
+            DATABASE: ${DATABASE_NAME}
+            USERNAME: /run/secrets/db_user
+            PASSWORD: /run/secrets/db_password
+        depends_on:
+            - database
     server:
         image: nginx:1.21.3-alpine
         container_name: integration_graphbook
@@ -59,34 +86,8 @@ services:
             - ./config/vhost_server.conf:/etc/nginx/conf.d/default.conf
         ports:
             - "8080:80"
-    api:
-        build:
-            context: ./
-            dockerfile: Dockerfile
-        image: psharpx/graphbook-api:${TAG}
-        container_name: api_graphbook
-        hostname: api.graphbook.pe
-        secrets:
-            - db_user
-            - db_password
-            - db_root_password
-        labels:
-            edu.cibertec.votoelectronico.project: "GraphBook"
-            edu.cibertec.votoelectronico.version: "1.0"
-            edu.cibertec.votoelectronico.author.name: "Christian Rivera"
-            edu.cibertec.votoelectronico.author.email: "crivera2093@gmail.com"
-            edu.cibertec.votoelectronico.author.url: "https://github.com/pSharpX"
-            edu.cibertec.votoelectronico.author.description: "GraphBook Application"
-        networks:
-            - graphbook/in.production
-        restart: always
-        environment:
-            HOST: ${DATABASE_HOSTNAME}
-            DATABASE: ${DATABASE_NAME}
-            USERNAME: /run/secrets/db_user
-            PASSWORD: /run/secrets/db_password
         depends_on:
-            - database
+            - api
     web:
         build:
             context: ./
@@ -109,4 +110,4 @@ services:
         ports:
             - "8081:80"
         depends_on:
-            - api
+            - server
