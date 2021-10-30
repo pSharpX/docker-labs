@@ -22,12 +22,12 @@ services:
             - db_password
             - db_root_password
         labels:
-            edu.cibertec.votoelectronico.project: "GraphBook"
-            edu.cibertec.votoelectronico.version: "1.0"
-            edu.cibertec.votoelectronico.author.name: "Christian Rivera"
-            edu.cibertec.votoelectronico.author.email: "crivera2093@gmail.com"
-            edu.cibertec.votoelectronico.author.url: "https://github.com/pSharpX"
-            edu.cibertec.votoelectronico.author.description: "GraphBook Application"
+            edu.cibertec.graphbook.project: "GraphBook"
+            edu.cibertec.graphbook.version: "1.0"
+            edu.cibertec.graphbook.author.name: "Christian Rivera"
+            edu.cibertec.graphbook.author.email: "crivera2093@gmail.com"
+            edu.cibertec.graphbook.author.url: "https://github.com/pSharpX"
+            edu.cibertec.graphbook.author.description: "GraphBook Application"
         networks:
             - graphbook/in.production
         ports:
@@ -52,12 +52,12 @@ services:
             - db_user
             - db_password
         labels:
-            edu.cibertec.votoelectronico.project: "GraphBook"
-            edu.cibertec.votoelectronico.version: "1.0"
-            edu.cibertec.votoelectronico.author.name: "Christian Rivera"
-            edu.cibertec.votoelectronico.author.email: "crivera2093@gmail.com"
-            edu.cibertec.votoelectronico.author.url: "https://github.com/pSharpX"
-            edu.cibertec.votoelectronico.author.description: "GraphBook Application"
+            edu.cibertec.graphbook.project: "GraphBook"
+            edu.cibertec.graphbook.version: "1.0"
+            edu.cibertec.graphbook.author.name: "Christian Rivera"
+            edu.cibertec.graphbook.author.email: "crivera2093@gmail.com"
+            edu.cibertec.graphbook.author.url: "https://github.com/pSharpX"
+            edu.cibertec.graphbook.author.description: "GraphBook Application"
         networks:
             - graphbook/in.production
         restart: always
@@ -73,12 +73,12 @@ services:
         container_name: integration_graphbook
         hostname: integration.graphbook.pe   
         labels:
-            edu.cibertec.votoelectronico.project: "GraphBook"
-            edu.cibertec.votoelectronico.version: "1.0"
-            edu.cibertec.votoelectronico.author.name: "Christian Rivera"
-            edu.cibertec.votoelectronico.author.email: "crivera2093@gmail.com"
-            edu.cibertec.votoelectronico.author.url: "https://github.com/pSharpX"
-            edu.cibertec.votoelectronico.author.description: "GraphBook Application"
+            edu.cibertec.graphbook.project: "GraphBook"
+            edu.cibertec.graphbook.version: "1.0"
+            edu.cibertec.graphbook.author.name: "Christian Rivera"
+            edu.cibertec.graphbook.author.email: "crivera2093@gmail.com"
+            edu.cibertec.graphbook.author.url: "https://github.com/pSharpX"
+            edu.cibertec.graphbook.author.description: "GraphBook Application"
         networks:
             - graphbook/in.production
             - graphbook/production
@@ -98,12 +98,12 @@ services:
         container_name: web_graphbook
         hostname: web.graphbook.pe
         labels:
-            edu.cibertec.votoelectronico.project: "GraphBook"
-            edu.cibertec.votoelectronico.version: "1.0"
-            edu.cibertec.votoelectronico.author.name: "Christian Rivera"
-            edu.cibertec.votoelectronico.author.email: "crivera2093@gmail.com"
-            edu.cibertec.votoelectronico.author.url: "https://github.com/pSharpX"
-            edu.cibertec.votoelectronico.author.description: "GraphBook Application"
+            edu.cibertec.graphbook.project: "GraphBook"
+            edu.cibertec.graphbook.version: "1.0"
+            edu.cibertec.graphbook.author.name: "Christian Rivera"
+            edu.cibertec.graphbook.author.email: "crivera2093@gmail.com"
+            edu.cibertec.graphbook.author.url: "https://github.com/pSharpX"
+            edu.cibertec.graphbook.author.description: "GraphBook Application"
         networks:
             - graphbook/production
         restart: always

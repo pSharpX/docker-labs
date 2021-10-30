@@ -24,13 +24,13 @@ ENV PASSWORD YOUR_PASSWORD
 ENV DATABASE YOUR_DATABASE
 ENV HOST YOUR_HOST
 
-LABEL edu.cibertec.votoelectronico.project.name="GraphBook" \
-    edu.cibertec.votoelectronico.project.key="graphbook" \
-    edu.cibertec.votoelectronico.project.version="1.0" \
-    edu.cibertec.votoelectronico.project.description="Social Network Application" \
-    edu.cibertec.votoelectronico.author.name="Christian Rivera" \
-    edu.cibertec.votoelectronico.author.email="crivera2093@gmail.com" \
-    edu.cibertec.votoelectronico.author.url="https://github.com/pSharpX"
+LABEL edu.cibertec.graphbook.project.name="GraphBook" \
+    edu.cibertec.graphbook.project.key="graphbook" \
+    edu.cibertec.graphbook.project.version="1.0" \
+    edu.cibertec.graphbook.project.description="Social Network Application" \
+    edu.cibertec.graphbook.author.name="Christian Rivera" \
+    edu.cibertec.graphbook.author.email="crivera2093@gmail.com" \
+    edu.cibertec.graphbook.author.url="https://github.com/pSharpX"
 
 WORKDIR ${WORKPLACE_PATH}/${MAIN_DIR}
 
