@@ -30,8 +30,8 @@ LABEL edu.cibertec.graphbook.project.name="GraphBook" \
 
 WORKDIR ${WORKPLACE_PATH}/${MAIN_DIR}
 
-COPY env_secrets_expand.sh /
-COPY entrypoint.sh /
+COPY env_secrets_expand.sh env_secrets_expand.sh
+COPY entrypoint.sh entrypoint.sh
 COPY --from=builder ${WORKPLACE_PATH}/${MAIN_DIR}/package.json package.json
 COPY --from=builder ${WORKPLACE_PATH}/${MAIN_DIR}/dist dist
 
@@ -42,4 +42,4 @@ RUN npm install
 
 EXPOSE 8000
 #CMD [ "npm", "run", "server:production" ]
-ENTRYPOINT [ "/entrypoint.sh" ] 
+ENTRYPOINT [ "entrypoint.sh" ] 
