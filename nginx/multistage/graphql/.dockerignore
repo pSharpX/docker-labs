@@ -4,5 +4,6 @@ secrets
 migration
 seeders
 data/db
-*.sh
+build_image.sh
+deploy_stack.sh
 *.yml
