@@ -64,8 +64,8 @@ services:
         environment:
             HOST: ${DATABASE_HOSTNAME}
             DATABASE: ${DATABASE_NAME}
-            USERNAME: /run/secrets/db_user
-            PASSWORD: /run/secrets/db_password
+            USERNAME: {{DOCKER-SECRET:db_user}}
+            PASSWORD: {{DOCKER-SECRET:db_password}}
         depends_on:
             - database
     server:

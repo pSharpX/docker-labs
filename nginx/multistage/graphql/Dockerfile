@@ -30,12 +30,16 @@ LABEL edu.cibertec.votoelectronico.project.name="GraphBook" \
 
 WORKDIR ${WORKPLACE_PATH}/${MAIN_DIR}
 
+COPY env_secrets_expand.sh /
+COPY entrypoint.sh /
 COPY --from=builder ${WORKPLACE_PATH}/${MAIN_DIR}/package.json package.json
 COPY --from=builder ${WORKPLACE_PATH}/${MAIN_DIR}/dist dist
 
 #RUN npm install --only=production
 ##TODO: change to --only=production when fixing application production building.
+RUN chmod +x env_secrets_expand.sh entrypoint.sh
 RUN npm install
 
 EXPOSE 8000
-CMD [ "npm", "run", "server:production" ]
+#CMD [ "npm", "run", "server:production" ]
+ENTRYPOINT [ "/entrypoint.sh" ] 
