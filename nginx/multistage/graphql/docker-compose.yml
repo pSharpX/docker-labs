@@ -71,7 +71,7 @@ services:
     server:
         image: nginx:1.21.3-alpine
         container_name: integration_graphbook
-        hostname: integration.graphbook.pe   
+        hostname: integration.graphbook.pe
         labels:
             edu.cibertec.graphbook.project: "GraphBook"
             edu.cibertec.graphbook.version: "1.0"
