@@ -28,7 +28,9 @@ LABEL edu.cibertec.graphbook.project.name="GraphBook" \
     edu.cibertec.graphbook.author.email="crivera2093@gmail.com" \
     edu.cibertec.graphbook.author.url="https://github.com/pSharpX"
 
-RUN mkdir ${WORKPLACE_PATH} && mkdir ${APPLICATION_PATH}
-
 COPY /config/vhost_client.conf /etc/nginx/conf.d/
+
+WORKDIR ${APPLICATION_PATH}
+
 COPY --from=builder ${APPLICATION_PATH}/dist/client ${APPLICATION_PATH}
+COPY --from=builder ${APPLICATION_PATH}/public public
