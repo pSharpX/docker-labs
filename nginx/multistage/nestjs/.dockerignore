@@ -1,0 +1,9 @@
+node_modules
+package-lock.json
+secrets
+migration
+seeders
+data/db
+build_image.sh
+deploy_stack.sh
+*.yml
